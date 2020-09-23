@@ -1,4 +1,4 @@
-package com.alicetool.project.alicedesktop.Service;
+package com.alicetool.project.alicedesktop;
 
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
@@ -7,8 +7,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
-import com.alicetool.project.alicedesktop.R;
+import com.alicetool.project.alicedesktop.Service.WeatherSystem;
 
+import org.json.JSONException;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,44 +18,37 @@ public class UpDataService extends Service {
 
     private Timer timer;
     private TimerTask task;
-    private AppWidgetManager widgetmanager;
-
-    public UpDataService() {
-    }
+    private AppWidgetManager widgetManager;
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 
     @Override
     public void onCreate() {
         timer = new Timer();
-        widgetmanager = AppWidgetManager.getInstance(getApplicationContext());
+        widgetManager = AppWidgetManager.getInstance(getApplicationContext());
         task=new TimerTask() {
             @Override
             public void run() {
                 WeatherSystem weather=new WeatherSystem();
                 weather.GetWeather("深圳", data -> {
-                    System.out.println("-------------------");
                     ComponentName name = new ComponentName(UpDataService.this.getPackageName(),
-                            UpDataService.class.getName());
+                            DesktopWidget.class.getName());// 获取前面参数包下的后参数的Widget
                     RemoteViews views = new RemoteViews(UpDataService.this.getPackageName(),
-                            R.layout.desktop_widget);
+                            R.layout.desktop_widget);// 获取Widget的布局
                     try {
-                        views.setTextViewText(R.id.textView,"123");
-
-                        System.out.println(data.getString("city"));
-                    } catch (Exception e) {
+                        views.setTextViewText(R.id.textView,data.getString("week") );
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    widgetmanager.updateAppWidget(name, views);
+                    widgetManager.updateAppWidget(name, views);//更新Widget
                 });
 
             }
         };
-        timer.scheduleAtFixedRate(task,1000,5000);
+        timer.scheduleAtFixedRate(task,1000,20000);
 
         super.onCreate();
     }

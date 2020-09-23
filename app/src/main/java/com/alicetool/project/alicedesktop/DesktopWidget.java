@@ -6,12 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.alicetool.project.alicedesktop.Service.UpDataService;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class DesktopWidget extends AppWidgetProvider {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+    }
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
