@@ -1,10 +1,13 @@
 package com.alicetool.project.alicedesktop;
 
+import android.app.ActivityManager;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
+
+import java.util.ArrayList;
 
 
 /**
@@ -14,6 +17,11 @@ public class DesktopWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (!isServiceRunning(context,UpDataService.class.getName())) {
+            Intent sIntent = new Intent(context, UpDataService.class);
+            context.startService(sIntent);
+        }
+
         super.onReceive(context, intent);
     }
 
@@ -45,6 +53,22 @@ public class DesktopWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, UpDataService.class);
         context.stopService(intent);
         System.out.println("end");
+    }
+
+    public static boolean isServiceRunning(Context context, String ServiceName) {
+        if (("").equals(ServiceName) || ServiceName == null)
+            return false;
+        ActivityManager myManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager
+                .getRunningServices(30);
+        for (int i = 0; i < runningService.size(); i++) {
+            if (runningService.get(i).service.getClassName().toString()
+                    .equals(ServiceName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

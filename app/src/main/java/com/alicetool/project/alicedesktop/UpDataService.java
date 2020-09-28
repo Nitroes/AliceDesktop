@@ -39,7 +39,7 @@ public class UpDataService extends Service {
                     RemoteViews views = new RemoteViews(UpDataService.this.getPackageName(),
                             R.layout.desktop_widget);// 获取Widget的布局
                     try {
-                        views.setTextViewText(R.id.textView,data.getString("week") );
+                        views.setTextViewText(R.id.textView,data.getString("temp") +"℃");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
