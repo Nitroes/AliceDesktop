@@ -39,7 +39,12 @@ public class UpDataService extends Service {
                     RemoteViews views = new RemoteViews(UpDataService.this.getPackageName(),
                             R.layout.desktop_widget);// 获取Widget的布局
                     try {
-                        views.setTextViewText(R.id.textView,data.getString("temp") +"℃");
+                        views.setTextViewText(R.id.temp,data.getString("temp") +"℃");
+                        views.setTextViewText(R.id.humidity,data.getString("humidity") +"Rh");
+                        views.setTextViewText(R.id.city,data.getString("city"));
+                        views.setTextViewText(R.id.weather,data.getString("weather"));
+                        views.setTextViewText(R.id.wind,data.getString("winddirect"));
+                        views.setTextViewText(R.id.windPower,data.getString("windpower"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -48,7 +53,7 @@ public class UpDataService extends Service {
 
             }
         };
-        timer.scheduleAtFixedRate(task,1000,20000);
+        timer.scheduleAtFixedRate(task,1000,60000);
 
         super.onCreate();
     }
