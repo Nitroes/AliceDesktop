@@ -26,7 +26,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/desktop_widget_info" />
         </receiver>
-        <service android:name=".UpDataService"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
