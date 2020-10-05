@@ -26,7 +26,7 @@ public class UpDataService extends Service {
     }
 
     @Override
-    public void onCreate() {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         timer = new Timer();
         widgetManager = AppWidgetManager.getInstance(getApplicationContext());
         task=new TimerTask() {
@@ -54,6 +54,12 @@ public class UpDataService extends Service {
             }
         };
         timer.scheduleAtFixedRate(task,1000,60000);
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onCreate() {
+
 
         super.onCreate();
     }
