@@ -1,6 +1,7 @@
 package com.alicetool.project.alicedesktop;
 
 import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.BroadcastReceiver;
@@ -100,6 +101,11 @@ public class DesktopWidget extends AppWidgetProvider {
                 views.setTextViewText(R.id.weather,data.getString("weather"));
                 views.setTextViewText(R.id.wind,data.getString("winddirect"));
                 views.setTextViewText(R.id.windPower,data.getString("windpower"));
+
+                //点击跳转
+                Intent skinIntent=new Intent(context,MainActivity.class);
+                PendingIntent pIntent=PendingIntent.getActivity(context,200,skinIntent,PendingIntent.FLAG_CANCEL_CURRENT);
+                views.setOnClickPendingIntent(R.id.widgetView,pIntent);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
