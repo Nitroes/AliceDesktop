@@ -19,6 +19,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textView=findViewById(R.id.textView);
+
+        SQLHelper sqlHelper=SQLHelper.getInit(getApplicationContext());
+        textView.setText(sqlHelper.getString("adcode"));
+
         findViewById(R.id.button).setOnClickListener(v->{
             Location location=new Location(getApplicationContext());
             location.getLocation(new BDAbstractLocationListener() {
