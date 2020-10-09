@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.alicetool.project.alicedesktop.Service.Location;
+import com.alicetool.project.alicedesktop.Service.SQLHelper;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onReceiveLocation(BDLocation bdLocation) {
                     String adcode = bdLocation.getAdCode();    //获取adcode
+                    SQLHelper sqlHelper=SQLHelper.getInit(getApplicationContext());
+                    sqlHelper.putString("adcode",adcode);
                     textView.setText(adcode);
                     location.close();
                 }

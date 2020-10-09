@@ -16,6 +16,7 @@ import android.widget.RemoteViews;
 import com.alicetool.project.alicedesktop.Service.WeatherSystem;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -132,25 +133,27 @@ public class DesktopWidget extends AppWidgetProvider {
 
     private void UpWeatherData(Context context){
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
-        WeatherSystem weather=new WeatherSystem();
+        WeatherSystem weather=new WeatherSystem(context);
         weather.GetWeather("深圳", data -> {
             ComponentName name = new ComponentName(context.getApplicationContext(),
                     DesktopWidget.class);// 获取前面参数包下的后参数的Widget
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.desktop_widget);// 获取Widget的布局
+
             try {
-                views.setTextViewText(R.id.temp,data.getString("temp") +"℃");
-                views.setTextViewText(R.id.humidity,data.getString("humidity") +"Rh");
-                views.setTextViewText(R.id.city,data.getString("city"));
-                views.setTextViewText(R.id.weather,data.getString("weather"));
-                views.setTextViewText(R.id.wind,data.getString("winddirect"));
-                views.setTextViewText(R.id.windPower,data.getString("windpower"));
+                JSONObject nowData=data.getJSONObject("now");
+                views.setTextViewText(R.id.temp,nowData.getString("feels_like") +"℃");
+                views.setTextViewText(R.id.humidity,nowData.getString("rh") +"Rh");
+                views.setTextViewText(R.id.city,data.getJSONObject("location").getString("name"));
+                views.setTextViewText(R.id.weather,nowData.getString("text"));
+                views.setTextViewText(R.id.wind,nowData.getString("wind_dir"));
+                views.setTextViewText(R.id.windPower,nowData.getString("wind_class"));
 
                 //点击跳转
                 Intent skinIntent=new Intent(context,MainActivity.class);
                 PendingIntent pIntent=PendingIntent.getActivity(context,200,skinIntent,PendingIntent.FLAG_CANCEL_CURRENT);
                 views.setOnClickPendingIntent(R.id.widgetView,pIntent);
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             widgetManager.updateAppWidget(name, views);//更新Widget
