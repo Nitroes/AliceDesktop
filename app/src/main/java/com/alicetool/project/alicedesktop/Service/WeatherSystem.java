@@ -47,7 +47,7 @@ public class WeatherSystem {
         }
 
 
-        httpClient.Get("http://api.map.baidu.com/weather/v1/?district_id="+sqlHelper.getString("adcode")+"&data_type=all&ak="+ak+"&mcode="+mcode, text -> {
+        httpClient.Get("http://api.map.baidu.com/weather/v1/?district_id="+"440305"+"&data_type=all&ak="+ak+"&mcode="+mcode, text -> {
             result=new JSONObject(text);
             result=result.getJSONObject("result");
 
