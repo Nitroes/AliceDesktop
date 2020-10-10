@@ -13,12 +13,15 @@ import android.content.IntentFilter;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.alicetool.project.alicedesktop.Service.SQLHelper;
 import com.alicetool.project.alicedesktop.Service.WeatherSystem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -142,12 +145,17 @@ public class DesktopWidget extends AppWidgetProvider {
 
             try {
                 JSONObject nowData=data.getJSONObject("now");
+                nowData.put("date",getNowDay("yyyy-MM-dd HH:mm:ss"));
                 views.setTextViewText(R.id.temp,nowData.getString("feels_like") +"℃");
                 views.setTextViewText(R.id.humidity,nowData.getString("rh") +"Rh");
                 views.setTextViewText(R.id.city,data.getJSONObject("location").getString("name"));
                 views.setTextViewText(R.id.weather,nowData.getString("text"));
                 views.setTextViewText(R.id.wind,nowData.getString("wind_dir"));
                 views.setTextViewText(R.id.windPower,nowData.getString("wind_class"));
+
+                SQLHelper sqlHelper=SQLHelper.getInit(context);
+                sqlHelper.insertWeather(data.getJSONObject("location").getString("name"), nowData);
+
 
                 //点击跳转
                 Intent skinIntent=new Intent(context,MainActivity.class);
@@ -176,6 +184,16 @@ public class DesktopWidget extends AppWidgetProvider {
         intent.putExtra("requestCode",requestCode);
         PendingIntent pendIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManagerOnInit.onInit(alarmManager,pendIntent);
+    }
+
+    public String getNowDay(String timeFormat){
+        /**
+         * SimpleDateFormat 是一个以与语言环境有关的方式来格式化和解析日期的具体类（java.text.SimpleDateFormat)。
+         * 它允许进行格式化（日期 -> 文本）、解析（文本 -> 日期）和规范化。
+         */
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(timeFormat);
+        String dateString = simpleDateFormat.format(new Date()); //将给定的 Date 格式化为日期/时间字符串
+        return dateString;
     }
 
 }

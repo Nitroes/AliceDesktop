@@ -24,17 +24,22 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(sqlHelper.getString("adcode"));
 
         findViewById(R.id.button).setOnClickListener(v->{
-            Location location=new Location(getApplicationContext());
-            location.getLocation(new BDAbstractLocationListener() {
-                @Override
-                public void onReceiveLocation(BDLocation bdLocation) {
-                    String adcode = bdLocation.getAdCode();    //获取adcode
-                    SQLHelper sqlHelper=SQLHelper.getInit(getApplicationContext());
-                    sqlHelper.putString("adcode",adcode);
-                    textView.setText(adcode);
-                    location.close();
-                }
-            });
+//            Location location=new Location(getApplicationContext());
+//            location.getLocation(new BDAbstractLocationListener() {
+//                @Override
+//                public void onReceiveLocation(BDLocation bdLocation) {
+//                    String adcode = bdLocation.getAdCode();    //获取adcode
+//                    SQLHelper sqlHelper=SQLHelper.getInit(getApplicationContext());
+//                    sqlHelper.putString("adcode",adcode);
+//                    textView.setText(adcode);
+//                    location.close();
+//                }
+//            });
+            try {
+                textView.setText(sqlHelper.getBeforeWeather(new String[]{"temp"}).toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         });
     }

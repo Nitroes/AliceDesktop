@@ -35,22 +35,21 @@ public class WeatherSystem {
 //        });
 
 
-        if (sqlHelper.getString("adcode")==null){
+        if (sqlHelper.getLocation()==null&&sqlHelper.getLocation().equals("")){
             Location location=new Location(context);
             location.getLocation(new BDAbstractLocationListener() {
                 @Override
                 public void onReceiveLocation(BDLocation bdLocation) {
                     String code = bdLocation.getAdCode();
-                    sqlHelper.putString("adcode",code);
+                    sqlHelper.putLocation(code);
                 }
             });
         }
 
 
-        httpClient.Get("http://api.map.baidu.com/weather/v1/?district_id="+sqlHelper.getString("adcode")+"&data_type=all&ak="+ak+"&mcode="+mcode, text -> {
+        httpClient.Get("http://api.map.baidu.com/weather/v1/?district_id="+sqlHelper.getLocation()+"&data_type=all&ak="+ak+"&mcode="+mcode, text -> {
             result=new JSONObject(text);
             result=result.getJSONObject("result");
-
             getData.backData(result);
 
         });

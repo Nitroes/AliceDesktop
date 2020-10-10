@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 29
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.alicetool.project.alicedesktop"
         minSdkVersion 22
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -31,5 +31,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.github.Nitroes:HttpClient:1.1.4'
+    implementation 'com.github.Nitroes:SQLHelper:0.1.0'
     implementation files('libs/BaiduLBS_Android.jar')
 }
