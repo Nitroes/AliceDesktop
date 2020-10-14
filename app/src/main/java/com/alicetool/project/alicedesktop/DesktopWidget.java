@@ -161,6 +161,7 @@ public class DesktopWidget extends AppWidgetProvider {
                 Intent skinIntent=new Intent(context,MainActivity.class);
                 PendingIntent pIntent=PendingIntent.getActivity(context,200,skinIntent,PendingIntent.FLAG_CANCEL_CURRENT);
                 views.setOnClickPendingIntent(R.id.widgetView,pIntent);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

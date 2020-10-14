@@ -1,7 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-
+    signingConfigs {
+        release {
+            keyAlias 'alicedesktop'
+            keyPassword '4455661238a'
+            storeFile file('E:/Key/aliceproject.jks')
+            storePassword '4455661238a'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.alicetool.project.alicedesktop"
@@ -10,6 +17,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        packagingOptions {
+            exclude 'META-INF/proguard/androidx-annotations.pro'
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -19,6 +30,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
     }
 }
@@ -31,6 +43,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.github.Nitroes:HttpClient:1.1.4'
-    implementation 'com.github.Nitroes:SQLHelper:0.1.0'
+    implementation 'com.github.Nitroes:SQLHelper:0.1.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation files('libs/BaiduLBS_Android.jar')
 }

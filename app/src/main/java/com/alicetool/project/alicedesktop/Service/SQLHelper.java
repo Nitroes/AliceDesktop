@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.alicetool.project.sql.SQL;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,12 +14,10 @@ public class SQLHelper extends SQLiteOpenHelper {
 
 
     public static SharedPreferences sharedPreferences=null;
-    private com.alicetool.project.sql.SQLHelper sql;
     private String TABLE_WEATHER="WEATHER_DATA";
 
     public SQLHelper(Context context) {
         super(context, "Env_Weather", null, 1);
-        sql=new com.alicetool.project.sql.SQLHelper(getWritableDatabase());
     }
 
     public static SQLHelper getInit (Context context){
@@ -40,10 +40,15 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public void putLocation(String value){ putString("adcode",value);}
 
+    public String getLastWeather(){return getString("lastWeather");}
+
+    public void putLastWeather(String value){ putString("lastWeather",value);}
+
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         try {
-            sql.createTable(TABLE_WEATHER,new JSONObject()
+            SQL.createTable(sqLiteDatabase,TABLE_WEATHER,new JSONObject()
                     .put("area","varchar(20)")//地区
                     .put("temp","tinyint")//温度
                     .put("feels_like","tinyint")//体感温度
@@ -61,7 +66,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
 
     public void insertWeather(String location,JSONObject now) throws Exception {
-        sql.insert(TABLE_WEATHER,new JSONObject()
+        SQL.insert(getWritableDatabase(),TABLE_WEATHER,new JSONObject()
                 .put("area",location)//地区
                 .put("temp",now.getString("temp"))
                 .put("feels_like",now.getString("feels_like"))//体感温度
@@ -73,7 +78,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     }
 
     public JSONArray getBeforeWeather(String[] select) throws Exception {
-        return sql.select(TABLE_WEATHER,select);
+        return SQL.select(getReadableDatabase(),TABLE_WEATHER,select);
     }
 
 

@@ -20,6 +20,7 @@ public class WeatherSystem {
 
 
     public WeatherSystem(Context context){
+        this.context=context;
         sqlHelper=SQLHelper.getInit(context);
     }
 
@@ -34,24 +35,31 @@ public class WeatherSystem {
 //            getData.backData(result);
 //        });
 
-
-        if (sqlHelper.getLocation()==null&&sqlHelper.getLocation().equals("")){
+        String adcode=sqlHelper.getLocation();
+        if (adcode.equals("")){
             Location location=new Location(context);
             location.getLocation(new BDAbstractLocationListener() {
                 @Override
                 public void onReceiveLocation(BDLocation bdLocation) {
                     String code = bdLocation.getAdCode();
                     sqlHelper.putLocation(code);
+                    GetHttp(getData, code);
                 }
             });
+        }else {
+            GetHttp(getData, adcode);
         }
 
 
-        httpClient.Get("http://api.map.baidu.com/weather/v1/?district_id="+sqlHelper.getLocation()+"&data_type=all&ak="+ak+"&mcode="+mcode, text -> {
+
+    }
+
+    private void GetHttp(GetData getData, String adcode) {
+        httpClient.Get("http://api.map.baidu.com/weather/v1/?district_id="+adcode+"&data_type=all&ak="+ak+"&mcode="+mcode, text -> {
             result=new JSONObject(text);
             result=result.getJSONObject("result");
             getData.backData(result);
-
+            sqlHelper.putLastWeather(String.valueOf(result));
         });
     }
 
