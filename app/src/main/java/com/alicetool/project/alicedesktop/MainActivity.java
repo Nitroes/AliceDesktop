@@ -44,10 +44,11 @@ public class MainActivity extends AppCompatActivity {
         }
         if (weather==null){
             WeatherSystem weatherSystem=new WeatherSystem(getApplicationContext());
-            weatherSystem.GetWeather(sqlHelper.getLocation(), data -> weather=data);
-        }
-
-        ChartInit();
+            weatherSystem.GetWeather(sqlHelper.getLocation(), data -> {
+                weather=data;
+                ChartInit();
+            });
+        }else {ChartInit();}
         
     }
 
