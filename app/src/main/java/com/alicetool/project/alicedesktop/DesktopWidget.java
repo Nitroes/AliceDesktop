@@ -155,7 +155,7 @@ public class DesktopWidget extends AppWidgetProvider {
 
                 SQLHelper sqlHelper=SQLHelper.getInit(context);
                 sqlHelper.insertWeather(data.getJSONObject("location").getString("name"), nowData);
-
+                sqlHelper.finish();
 
                 //点击跳转
                 Intent skinIntent=new Intent(context,MainActivity.class);

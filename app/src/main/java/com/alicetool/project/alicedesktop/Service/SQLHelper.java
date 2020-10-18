@@ -77,6 +77,10 @@ public class SQLHelper extends SQLiteOpenHelper {
         );
     }
 
+    public void finish(){
+        close();
+    }
+
     public JSONArray getBeforeWeather(String[] select) throws Exception {
         return SQL.select(getReadableDatabase(),TABLE_WEATHER,select);
     }

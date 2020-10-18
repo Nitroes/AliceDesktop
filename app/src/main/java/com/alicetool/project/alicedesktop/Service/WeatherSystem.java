@@ -6,6 +6,7 @@ import com.alicetool.project.httpclient.HttpClient;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class WeatherSystem {
@@ -25,7 +26,7 @@ public class WeatherSystem {
     }
 
     public interface GetData{
-        void backData(JSONObject data);
+        void backData(JSONObject data) throws JSONException;
     }
 
     public void GetWeather(String city,GetData getData){
@@ -43,6 +44,7 @@ public class WeatherSystem {
                 public void onReceiveLocation(BDLocation bdLocation) {
                     String code = bdLocation.getAdCode();
                     sqlHelper.putLocation(code);
+                    sqlHelper.finish();
                     GetHttp(getData, code);
                 }
             });

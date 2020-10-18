@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="PredictionItem_Text">
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">#6c6c6c</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>
