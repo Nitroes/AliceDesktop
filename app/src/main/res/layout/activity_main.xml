@@ -5,39 +5,48 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    android:padding="5dp">
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/line_chart"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+    android:padding="8dp"
+    android:gravity="center|top"
+    android:background="#e3e3e3">
 
     <HorizontalScrollView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fillViewport="true">
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:background="#fff"
+        android:paddingTop="10dp"
+        android:padding="7dp">
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="horizontal">
 
             <GridView
                 android:id="@+id/prediction_view"
-                android:layout_width="fill_parent"
+                android:layout_width="750dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:columnWidth="500dp"
+                android:columnWidth="150dp"
                 android:fadeScrollbars="true"
                 android:horizontalSpacing="2dp"
                 android:numColumns="auto_fit"
+                android:scrollbarAlwaysDrawHorizontalTrack="true"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:scrollbars="horizontal"
                 android:stretchMode="none"></GridView>
         </LinearLayout>
 
 
-
     </HorizontalScrollView>
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:background="#fff"/>
 
 
 </LinearLayout>

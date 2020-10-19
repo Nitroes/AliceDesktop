@@ -10,6 +10,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -68,6 +70,11 @@ public class DesktopWidget extends AppWidgetProvider {
             try {
                 Thread.sleep(10000);
                 UpWeatherData(context);
+                alarmManagerInit(context,(alarmManager,pendIntent)->{
+                    alarmManager.cancel(pendIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),120000,pendIntent);
+//                    manager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),120000,intent);
+                });
                 Log.i("WidgetStatus", "onUpdate");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -89,7 +96,7 @@ public class DesktopWidget extends AppWidgetProvider {
 //        context.getApplicationContext().registerReceiver(timeBroadcast, updateIntent);
 
         alarmManagerInit(context,(alarmManager,pendIntent)->{
-            alarmManager.setRepeating(AlarmManager.RTC,System.currentTimeMillis(),120000,pendIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),120000,pendIntent);
         });
         registSreenStatusReceiver(context);
     }
