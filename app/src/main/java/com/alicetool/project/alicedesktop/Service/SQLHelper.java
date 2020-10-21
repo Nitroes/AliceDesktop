@@ -75,6 +75,7 @@ public class SQLHelper extends SQLiteOpenHelper {
                 .put("wind_dir",now.getString("wind_dir"))//风向描述
                 .put("text",now.getString("text"))//天气现象
         );
+        getWritableDatabase().execSQL("DELETE FROM "+TABLE_WEATHER+" WHERE datetime('now', '-24 hours') >= date(date)");
     }
 
     public void finish(){

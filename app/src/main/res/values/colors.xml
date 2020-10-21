@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorWidgetDark">#AA000000</color>
+    <color name="colorWhite">#616060</color>
+    <color name="colorSpinnerText">#000000</color>
 </resources>

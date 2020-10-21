@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.alicetool.project.alicedesktop.Service.SQLHelper;
@@ -15,6 +18,7 @@ import com.alicetool.project.alicedesktop.Service.WeatherSystem;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -32,38 +36,112 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    LineChart lineChart;
+    LineChart lineChart,historyLineChart;
     JSONObject weather=null;
     SQLHelper sqlHelper;
     GridView predictionView;
-    JSONArray jsonArray;
+    JSONArray jsonArray=null,historyJsonArray=null;
+    Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        spinner=findViewById(R.id.spinner);
+        predictionView=findViewById(R.id.prediction_view);
+        lineChart=findViewById(R.id.line_chart);
+        historyLineChart=findViewById(R.id.history_line_chart);
 
         sqlHelper=SQLHelper.getInit(getApplicationContext());
         try {
             weather=new JSONObject(sqlHelper.getLastWeather());
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (weather==null){
             WeatherSystem weatherSystem=new WeatherSystem(getApplicationContext());
             weatherSystem.GetWeather(sqlHelper.getLocation(), data -> {
                 weather=data;
-
                 ChartInit();
             });
         }else {
-
             ChartInit();
-
-
         }
-        
+        historyChart();
+
+
+
+    }
+
+    private void historyChart() {
+
+        List<Entry> temp=new ArrayList<>();
+        List<Entry> hum=new ArrayList<>();
+        List<Long> time=new ArrayList<>();
+
+        try {
+            historyJsonArray=sqlHelper.getBeforeWeather(new String[]{"temp","rh","date"});
+            for (int i = 0; i <historyJsonArray.length() ; i++) {
+                JSONObject json=historyJsonArray.getJSONObject(i);
+                temp.add(new Entry(i,json.getInt("temp")));
+                hum.add(new Entry(i,json.getInt("rh")));
+
+                time.add(DateToLong(json.getString("date"),"yyyy-MM-dd HH:mm:ss"));
+            }
+        }catch (Exception e){}
+
+        XAxis xAxis=historyLineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAvoidFirstLastClipping(true);
+        xAxis.setLabelRotationAngle(60);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                String text=LongToDate(time.get((int) value),"HH:mm");
+                return text;
+            }
+        });
+        historyLineChart.getAxisRight().setEnabled(false);
+
+        Description description=new Description();
+        description.setText("过去24内数据");
+        historyLineChart.setDescription(description);
+        LineDataSet tempDataSet=getLineDataSet(temp, "温度",Color.BLUE,"");
+        LineDataSet humDataSet=getLineDataSet(hum, "湿度",Color.GREEN,"");
+        LineData lineData=new LineData(tempDataSet);
+
+        ArrayAdapter adapter=ArrayAdapter.createFromResource(this,R.array.array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                lineData.removeDataSet(lineData.getDataSetCount()-1);
+                if (i==0){
+                    lineData.addDataSet(tempDataSet);
+                }else {
+                    lineData.addDataSet(humDataSet);
+                }
+                historyLineChart.notifyDataSetChanged();
+                historyLineChart.invalidate();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+
+
+
+
+        historyLineChart.setData(lineData);
+
+
     }
 
     private void ChartInit() {
@@ -74,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             jsonArray=weather.getJSONArray("forecasts");
             for (int i = 0; i <jsonArray.length() ; i++) {
                 JSONObject json=jsonArray.getJSONObject(i);
-                date.add(DateToLong(json.getString("date")));
+                date.add(DateToLong(json.getString("date"),"yyyy-MM-dd"));
                 high.add(new Entry(i,json.getInt("high")));
                 low.add(new Entry(i,json.getInt("low")));
             }
@@ -84,10 +162,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         LineData lineData=new LineData(
-                getLineDataSet(high, "最高温度",Color.RED),
-                getLineDataSet(low, "最低温度",Color.BLUE)
+                getLineDataSet(high, "最高温度",Color.RED,"℃"),
+                getLineDataSet(low, "最低温度",Color.BLUE,"℃")
         );
-        predictionView=findViewById(R.id.prediction_view);
+
         predictionView.setNumColumns(jsonArray.length());
         System.out.println("jsonArray.length() = " + jsonArray.length());
         predictionView.setAdapter(new BaseAdapter() {
@@ -143,14 +221,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-        lineChart=findViewById(R.id.line_chart);
+
         XAxis xAxis=lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAvoidFirstLastClipping(true);
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                String time=LongToDate(date.get((int) value));
+                String time=LongToDate(date.get((int) value),"MM-dd");
                 return time;
             }
         });
@@ -164,8 +242,8 @@ public class MainActivity extends AppCompatActivity {
         lineChart.setData(lineData);
     }
 
-    private long DateToLong(String dateStr) {
-        SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
+    private long DateToLong(String dateStr,String type) {
+        SimpleDateFormat pattern = new SimpleDateFormat(type);
         Date date = null;
         try {
             date = pattern.parse(dateStr);
@@ -175,12 +253,13 @@ public class MainActivity extends AppCompatActivity {
         return date.getTime();
     }
 
-    private String LongToDate(long dateLong) {
-        SimpleDateFormat pattern = new SimpleDateFormat("MM-dd");
+    private String LongToDate(long dateLong,String type) {
+        SimpleDateFormat pattern = new SimpleDateFormat(type);
         return pattern.format(new Date(dateLong));
     }
 
-    private LineDataSet getLineDataSet(List<Entry> data, String high,int color) {
+
+    private LineDataSet getLineDataSet(List<Entry> data, String high,int color,String type) {
         LineDataSet dataSet = new LineDataSet(data, high);
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSet.setDrawCircles(false);
@@ -188,12 +267,16 @@ public class MainActivity extends AppCompatActivity {
         dataSet.setFillColor(color);//设置填充颜色
         dataSet.setFillAlpha(60);//设置填充区域透明度，默认值为85
         dataSet.setColor(color);
-        dataSet.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                return (int)value+"℃";
-            }
-        });
+        if (!type.equals("")){
+            dataSet.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    return (int)value+type;
+                }
+            });
+        }else {
+            dataSet.setDrawValues(false);
+        }
         return dataSet;
     }
 
