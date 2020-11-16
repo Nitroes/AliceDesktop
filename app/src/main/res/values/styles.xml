@@ -14,6 +14,14 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_margin">1dp</item>
         <item name="android:textSize">12sp</item>
+         <item name="fontFamily">@font/text</item>
+    </style>
+
+    <style name="WeatherItem_Text">
+        <item name="android:textColor">#fff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/text</item>
     </style>
 
 

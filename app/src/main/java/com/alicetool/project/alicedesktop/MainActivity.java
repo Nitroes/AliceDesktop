@@ -1,7 +1,8 @@
 package com.alicetool.project.alicedesktop;
 
+
+import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +14,13 @@ import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.alicetool.project.alicedesktop.Service.SQLHelper;
 import com.alicetool.project.alicedesktop.Service.WeatherSystem;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -35,7 +37,6 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     LineChart lineChart,historyLineChart;
     JSONObject weather=null;
     SQLHelper sqlHelper;
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         Description description=new Description();
         description.setText("过去24内数据");
         historyLineChart.setDescription(description);
-        LineDataSet tempDataSet=getLineDataSet(temp, "温度",Color.BLUE,"");
+        LineDataSet tempDataSet=getLineDataSet(temp, "温度", Color.BLUE,"");
         LineDataSet humDataSet=getLineDataSet(hum, "湿度",Color.GREEN,"");
         LineData lineData=new LineData(tempDataSet);
 

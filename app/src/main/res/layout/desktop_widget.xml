@@ -4,103 +4,104 @@
     android:layout_height="match_parent"
     android:gravity="left|center"
     android:orientation="vertical"
-    android:padding="@dimen/widget_margin">
+    android:padding="5dp">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/font_margin"
-            android:layout_weight="1"
-            android:background="@color/colorWidgetDark"
-            android:gravity="center"
-            android:padding="@dimen/font_padding"
-            android:text="null"
-            android:textColor="#FFF"
-            android:textSize="@dimen/font_size" />
-
-        <TextView
-            android:id="@+id/weather"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/font_margin"
-            android:layout_weight="1"
-            android:background="@color/colorWidgetDark"
-            android:gravity="center"
-            android:padding="@dimen/font_padding"
-            android:text="null"
-            android:textColor="#FFF"
-            android:textSize="@dimen/font_size" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="bottom">
 
         <TextView
             android:id="@+id/temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/font_margin"
-            android:layout_weight="1"
-            android:background="@color/colorWidgetDark"
-            android:gravity="center"
-            android:padding="@dimen/font_padding"
-            android:text="null"
-            android:textColor="#FFF"
-            android:textSize="@dimen/font_size" />
+            style="@style/WeatherItem_Text"
+            android:text="00"
+            android:textSize="40dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="℃"
+            style="@style/WeatherItem_Text" />
 
         <TextView
             android:id="@+id/humidity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/font_margin"
-            android:layout_weight="1"
-            android:background="@color/colorWidgetDark"
-            android:gravity="center"
-            android:padding="@dimen/font_padding"
-            android:text="null"
-            android:textColor="#FFF"
-            android:textSize="@dimen/font_size" />
+            android:layout_marginLeft="15dp"
+            android:text="00"
+            style="@style/WeatherItem_Text"
+            android:textSize="40dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Rh"
+            style="@style/WeatherItem_Text" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"></LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LV."
+            style="@style/WeatherItem_Text" />
+        <TextView
+            android:id="@+id/windPower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            style="@style/WeatherItem_Text"
+            android:textSize="40dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#fff"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="null"
+            style="@style/WeatherItem_Text"
+            android:textColor="#000"/>
 
+        <TextView
+            android:id="@+id/weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="null"
+            android:textColor="#000"
+            style="@style/WeatherItem_Text"
+            android:textSize="@dimen/font_size" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            ></LinearLayout>
         <TextView
             android:id="@+id/wind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/font_margin"
-            android:layout_weight="1"
-            android:background="@color/colorWidgetDark"
-            android:gravity="center"
-            android:padding="@dimen/font_padding"
+            style="@style/WeatherItem_Text"
             android:text="null"
-            android:textColor="#FFF"
-            android:textSize="@dimen/font_size" />
+            android:textColor="#000"/>
 
-        <TextView
-            android:id="@+id/windPower"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/font_margin"
-            android:layout_weight="1"
-            android:background="@color/colorWidgetDark"
-            android:gravity="center"
-            android:padding="@dimen/font_padding"
-            android:text="null"
-            android:textColor="#FFF"
-            android:textSize="@dimen/font_size" />
     </LinearLayout>
 
 </LinearLayout>
