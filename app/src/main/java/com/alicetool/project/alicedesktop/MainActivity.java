@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
         }
         historyChart();
 
-
-
     }
 
     private void historyChart() {

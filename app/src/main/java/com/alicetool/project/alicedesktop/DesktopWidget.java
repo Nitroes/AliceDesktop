@@ -150,12 +150,12 @@ public class DesktopWidget extends AppWidgetProvider {
             try {
                 JSONObject nowData=data.getJSONObject("now");
                 nowData.put("date",getNowDay("yyyy-MM-dd HH:mm:ss"));
-                views.setTextViewText(R.id.temp,nowData.getString("feels_like") +"℃");
-                views.setTextViewText(R.id.humidity,nowData.getString("rh") +"Rh");
+                views.setTextViewText(R.id.temp,nowData.getString("feels_like"));
+                views.setTextViewText(R.id.humidity,nowData.getString("rh"));
                 views.setTextViewText(R.id.city,data.getJSONObject("location").getString("name"));
                 views.setTextViewText(R.id.weather,nowData.getString("text"));
                 views.setTextViewText(R.id.wind,nowData.getString("wind_dir"));
-                views.setTextViewText(R.id.windPower,nowData.getString("wind_class"));
+                views.setTextViewText(R.id.windPower,nowData.getString("wind_class").substring(0,1));
 
                 SQLHelper sqlHelper=SQLHelper.getInit(context);
                 sqlHelper.insertWeather(data.getJSONObject("location").getString("name"), nowData);

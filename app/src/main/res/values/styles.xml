@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
+    </style>ss
 
     <style name="PredictionItem_Text">
         <item name="android:textColor">#fff</item>
@@ -14,14 +14,14 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_margin">1dp</item>
         <item name="android:textSize">12sp</item>
-         <item name="fontFamily">@font/text</item>
+        <item name="android:fontFamily">@font/text</item>
     </style>
 
     <style name="WeatherItem_Text">
         <item name="android:textColor">#fff</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>
-        <item name="fontFamily">@font/text</item>
+        <item name="android:fontFamily">@font/text</item>
     </style>
 
 
